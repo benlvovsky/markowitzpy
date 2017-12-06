@@ -120,7 +120,7 @@ class MeanVariancePortfolio(dx.mean_variance_portfolio):
         plot(x, y, alpha=0.5)
         show()
 
-    def get_capital_market_line_bl(self, x, y, riskless_asset):
+    def get_capital_market_line_bl_deprecated(self, x, y, riskless_asset):
         '''
         Returns the capital market line as a lambda function and
         the coordinates of the intersection between the captal market

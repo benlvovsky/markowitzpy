@@ -3,8 +3,12 @@ FROM python:2
 MAINTAINER Benjamin Lvovsky, ben@lvovsky.com
 WORKDIR /usr/src/app
 
+#RUN echo "deb http://archive.ubuntu.com/ubuntu/ xenial-updates main universe multiverse" >> /etc/apt/sources.list
+
 RUN apt-get update
-RUN apt-get upgrade -y 
+
+RUN apt-get upgrade -y --force-yes
+
 RUN apt-get install -y \
     libssl-dev \
     libffi-dev \
@@ -13,14 +17,12 @@ RUN apt-get install -y \
     libjpeg62-turbo-dev \
 	git \
     wget \
-    curl \
-    vim \
-    python-qt4 	    # not needed in non interactive version. TODO: remove for prod \
 	libxml2-dev \
 	libxslt-dev \
-	python-dev \
+    curl \
 	zlib1g-dev
 
+<<<<<<< Updated upstream
 #    postgresql-client-9.6 postgresql-contrib-9.6 \
 #    && apt-get autoremove \
 #    && apt-get clean
@@ -33,6 +35,13 @@ RUN apt-get install -y \
 #COPY requirements.txt ./
 
 #RUN pip install --no-cache-dir -r requirements.txt
+=======
+#    vim \
+#    python-qt4 	    # not needed in non interactive version. TODO: remove for prod \
+#	libicu-dev \
+#	libpython-dev \
+#	python-dev \
+>>>>>>> Stashed changes
 
 RUN pip install 'scipy==0.13.3'
 RUN pip install 'seaborn==0.8'
