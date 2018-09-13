@@ -6,6 +6,7 @@ from flask import send_file
 import json
 import settings as st
 import os
+import findata as fd
 
 app = Flask(__name__)
 
@@ -104,6 +105,34 @@ def download():
                          attachment_filename=attachment_filename, mimetype='text/csv')
     except Exception as e:
         return '{{"response":{{"success":"false", "error":"{}"}} }}'.format(str(e))
+
+
+@app.route('/download_eof')
+def download1():
+    source=request.args.get('source').encode("ascii")
+    symbols=request.args.get('symbols').encode("ascii")
+    startDate = request.args.get('from')
+    endDate = request.args.get('to')
+    attachment_filename = request.args.get('downloadFileName')
+    print ('request from={}'.format(startDate))
+    print ('request to={}'.format(endDate))
+    print ('request symbols={}'.format(symbols))
+    print ('request downloadFileName={}'.format(attachment_filename))
+
+    try:
+        # sendFilePath = mark.downloadInstruments(symbols, start, end)
+        dateFormat  = st.config['downloader']['dateFormat']
+
+        start = dt.datetime.strptime(startDate, dateFormat)
+        end   = dt.datetime.strptime(endDate, dateFormat)
+
+        sendFilePath = fd.FinDownloader(source).downloadInstruments(symbols, start, end)
+
+        return send_file(sendFilePath, as_attachment=True,
+                         attachment_filename=attachment_filename, mimetype='text/csv')
+    except Exception as e:
+        return '{{"response":{{"success":"false", "error":"{}"}} }}'.format(str(e))
+
 
 def uploadcsvGeneric(endPointName, sourceName, calcFunc):
     print 'Endpoint Name = {}, Source Name = {}'.format(endPointName, sourceName)
